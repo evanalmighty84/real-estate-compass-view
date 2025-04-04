@@ -99,7 +99,7 @@ const mockAgents = [
 const Agents = () => {
   const location = useLocation();
   const [searchQuery, setSearchQuery] = React.useState("");
-  const [specialty, setSpecialty] = React.useState("");
+  const [specialty, setSpecialty] = React.useState("any");
   const [sortOrder, setSortOrder] = React.useState("listings-desc");
   const [filteredAgents, setFilteredAgents] = React.useState(mockAgents);
   
@@ -113,7 +113,7 @@ const Agents = () => {
       );
     }
     
-    if (specialty) {
+    if (specialty && specialty !== "any") {
       filtered = filtered.filter(agent => 
         agent.specialty?.toLowerCase() === specialty.toLowerCase()
       );
@@ -166,7 +166,7 @@ const Agents = () => {
                   <SelectValue placeholder="Any Specialty" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Any Specialty</SelectItem>
+                  <SelectItem value="any">Any Specialty</SelectItem>
                   <SelectItem value="Residential">Residential</SelectItem>
                   <SelectItem value="Commercial">Commercial</SelectItem>
                   <SelectItem value="Luxury">Luxury</SelectItem>

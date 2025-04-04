@@ -26,11 +26,11 @@ interface SearchFiltersProps {
 
 const SearchFilters: React.FC<SearchFiltersProps> = ({ className, onSearch }) => {
   const [location, setLocation] = React.useState('');
-  const [propertyType, setPropertyType] = React.useState('');
+  const [propertyType, setPropertyType] = React.useState('any');
   const [minPrice, setMinPrice] = React.useState(0);
   const [maxPrice, setMaxPrice] = React.useState(2000000);
-  const [bedrooms, setBedrooms] = React.useState('');
-  const [bathrooms, setBathrooms] = React.useState('');
+  const [bedrooms, setBedrooms] = React.useState('any');
+  const [bathrooms, setBathrooms] = React.useState('any');
   const [moreFilters, setMoreFilters] = React.useState<Record<string, any>>({});
   const [activeFilters, setActiveFilters] = React.useState<string[]>([]);
 
@@ -39,17 +39,17 @@ const SearchFilters: React.FC<SearchFiltersProps> = ({ className, onSearch }) =>
       location,
       propertyType,
       price: { min: minPrice, max: maxPrice },
-      bedrooms: bedrooms || 'Any',
-      bathrooms: bathrooms || 'Any',
+      bedrooms: bedrooms === 'any' ? 'Any' : bedrooms,
+      bathrooms: bathrooms === 'any' ? 'Any' : bathrooms,
       ...moreFilters,
     };
     
     // Update active filters for display
     const newActiveFilters = [];
     if (location) newActiveFilters.push(`Location: ${location}`);
-    if (propertyType) newActiveFilters.push(`Type: ${propertyType}`);
-    if (bedrooms) newActiveFilters.push(`${bedrooms}+ Beds`);
-    if (bathrooms) newActiveFilters.push(`${bathrooms}+ Baths`);
+    if (propertyType !== 'any') newActiveFilters.push(`Type: ${propertyType}`);
+    if (bedrooms !== 'any') newActiveFilters.push(`${bedrooms}+ Beds`);
+    if (bathrooms !== 'any') newActiveFilters.push(`${bathrooms}+ Baths`);
     newActiveFilters.push(`Price: $${minPrice.toLocaleString()} - $${maxPrice.toLocaleString()}`);
     
     setActiveFilters(newActiveFilters);
@@ -61,19 +61,19 @@ const SearchFilters: React.FC<SearchFiltersProps> = ({ className, onSearch }) =>
     
     // Reset the corresponding filter
     if (filter.includes('Location')) setLocation('');
-    if (filter.includes('Type')) setPropertyType('');
-    if (filter.includes('Beds')) setBedrooms('');
-    if (filter.includes('Baths')) setBathrooms('');
+    if (filter.includes('Type')) setPropertyType('any');
+    if (filter.includes('Beds')) setBedrooms('any');
+    if (filter.includes('Baths')) setBathrooms('any');
     // We don't reset price range here as it would require more complex logic
   };
   
   const handleClearAllFilters = () => {
     setLocation('');
-    setPropertyType('');
+    setPropertyType('any');
     setMinPrice(0);
     setMaxPrice(2000000);
-    setBedrooms('');
-    setBathrooms('');
+    setBedrooms('any');
+    setBathrooms('any');
     setMoreFilters({});
     setActiveFilters([]);
   };
@@ -101,7 +101,7 @@ const SearchFilters: React.FC<SearchFiltersProps> = ({ className, onSearch }) =>
               <SelectValue placeholder="Any" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">Any</SelectItem>
+              <SelectItem value="any">Any</SelectItem>
               <SelectItem value="single-family">Single Family</SelectItem>
               <SelectItem value="condo">Condo</SelectItem>
               <SelectItem value="townhouse">Townhouse</SelectItem>
@@ -152,7 +152,7 @@ const SearchFilters: React.FC<SearchFiltersProps> = ({ className, onSearch }) =>
               <SelectValue placeholder="Any" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">Any</SelectItem>
+              <SelectItem value="any">Any</SelectItem>
               <SelectItem value="1">1+</SelectItem>
               <SelectItem value="2">2+</SelectItem>
               <SelectItem value="3">3+</SelectItem>
@@ -169,7 +169,7 @@ const SearchFilters: React.FC<SearchFiltersProps> = ({ className, onSearch }) =>
               <SelectValue placeholder="Any" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">Any</SelectItem>
+              <SelectItem value="any">Any</SelectItem>
               <SelectItem value="1">1+</SelectItem>
               <SelectItem value="2">2+</SelectItem>
               <SelectItem value="3">3+</SelectItem>
